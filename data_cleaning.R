@@ -10,11 +10,24 @@ library(janitor)
 
 
 # Clean data set (nrow - N/A) # STILL HAVENT FIGURE OUT
-
 # Load Data set (replace with your own file path)
 filePath <- "C:/Users/User/OneDrive/Documents/Degree Sem 1/Programming for Data Analysis/Sample Coursework Question Papers, Coursework Model Answers, and Marking Rubrics-20240329/5. credit score classification data.csv"
 data <- read.csv(filePath)
 View(data)
+
+# Check for missing values in each data set column
+missing_data <- colSums(is.na(data))
+
+# Print missing data in an organized format
+cat("Column Name                      Missing Values\n")
+cat("----------------------------------------------\n")
+for (col in names(missing_data)) {
+  cat(sprintf("%-30s %d\n", col, missing_data[col]))
+}
+
+
+
+
 
 # View data structure
 str(data)
