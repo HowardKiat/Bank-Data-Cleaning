@@ -33,6 +33,7 @@ data$Num_Bank_Accounts <- as.numeric(data$Num_Bank_Accounts)
 data$Num_Credit_Card <- as.numeric(data$Num_Credit_Card)
 data$Interest_Rate <- as.numeric(data$Interest_Rate)
 data$Num_of_Loan <- as.numeric(data$Num_of_Loan)
+data$Type_of_Loan <- as.factor(data$Type_of_Loan)
 data$Delay_from_due_date <- as.numeric(data$Delay_from_due_date)
 data$Num_of_Delayed_Payment <- as.numeric(data$Num_of_Delayed_Payment)
 data$Changed_Credit_Limit <- as.numeric(data$Changed_Credit_Limit)
@@ -53,8 +54,12 @@ if (any(is.na(data))) {
   cat("Warning: The dataset has missing values")
 }
 
-
-
+# Show unique types of loans
+unique_loan_type <- unique(data$Type_of_Loan)
+cat("Loan Types:\n")
+for (loan in unique_loan_type) {
+  cat("-", loan, "\n")
+}
 
 
 
