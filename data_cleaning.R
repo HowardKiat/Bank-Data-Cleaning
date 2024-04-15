@@ -11,14 +11,17 @@ library(janitor)
 
 # Clean data set (nrow - N/A) # STILL HAVENT FIGURE OUT
 # Load Data set (replace with your own file path)
+
 filePath <- "C:/Users/User/OneDrive/Documents/Degree Sem 1/Programming for Data Analysis/Sample Coursework Question Papers, Coursework Model Answers, and Marking Rubrics-20240329/5. credit score classification data.csv"
 data <- read.csv(filePath)
 View(data)
 
 # Check for missing values in each data set column
+
 missing_data <- colSums(is.na(data))
 
 # Print missing data in an organized format
+
 cat("Column Name                      Missing Values\n")
 cat("----------------------------------------------\n")
 for (col in names(missing_data)) {
@@ -29,10 +32,19 @@ for (col in names(missing_data)) {
 
 
 
+
+# Summary of the data set with its data types displayed
+
+glimpse(data)
+
+
+
 # View data structure
+
 str(data)
 
 # Convert data set data types
+
 data$ID <- as.character(data$ID)
 data$Customer_ID <- as.character(data$Customer_ID)
 data$Month <- as.factor(data$Month)
@@ -62,33 +74,13 @@ data$Payment_Behaviour <- as.character(data$Payment_Behaviour)
 data$Monthly_Balance <- as.numeric(data$Monthly_Balance)
 data$Credit_Score <- as.character(data$Credit_Score)
 
-# Validate the data set
-if (any(is.na(data))) {
-  cat("Warning: The dataset has missing values")
-}
 
-# Show unique types of loans
-unique_loan_type <- unique(data$Type_of_Loan)
-cat("Loan Types:\n")
-for (loan in unique_loan_type) {
-  cat("-", loan, "\n")
-}
+# Filter findings
 
-
-
-
-
-
-
-
-# Delete Rows and Cols with missing data
-data$ID <- janitor::remove_empty(data)
-view(data$ID)
-
-data$ID <- janitor::remove_empty_rows(data, which = "rows")
-data$ID <- janitor::remove_empty_cols(data, which = "cols")
-
-
+# unique(data$x)
+# data %>% 
+#   select(x1, x2, ...("y")) %>% 
+#   filter(x1, %in% c("y1", y2") & x2 < N/A) %>% 
 
 
 
