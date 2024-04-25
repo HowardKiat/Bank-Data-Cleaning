@@ -5,6 +5,7 @@ library(janitor)
 library(stringr)
 library(plyr)
 library(ggplot2)
+library(crayon)
 options(scipen = 999)
 
 # Things to explore
