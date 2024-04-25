@@ -2,19 +2,61 @@
 library(tidyr)
 library(dplyr)
 library(janitor)
+library(stringr)
+library(plyr)
+library(ggplot2)
+options(scipen = 999)
 
 # Things to explore
-# require(stringer)
 # require(stats)
 # require(DataExplorer)
 
 
 # Clean data set (nrow - N/A) # STILL HAVENT FIGURE OUT
 # Load Data set (replace with your own file path)
-
 filePath <- "C:/Users/User/OneDrive/Documents/Degree Sem 1/Programming for Data Analysis/Sample Coursework Question Papers, Coursework Model Answers, and Marking Rubrics-20240329/5. credit score classification data.csv"
 data <- read.csv(filePath)
 View(data)
+
+# Check data set structure
+head(data)
+tail(data)
+str(data)
+summary(data)
+
+
+# Lowercase all column names
+names(data) <- tolower(names(data))
+colnames(data)
+
+# Check NA (missing value) in data set by column
+colSums(is.na(data))
+View(data)
+
+
+# Check and loop each column of the data set
+for (col in names(data)) {
+  # Check for white spaces in each column
+  if (any(grepl("^\\s*$", data[[col]]))) {
+    # If any white spaces are found, replace them with NA value
+    data[[col]] <- ifelse(grepl("^\\s*$", data[[col]]), NA, data[[col]])
+  }
+}
+
+# View the data set to check changes
+View(data)
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+
 
 # Check for missing values in each data set column
 
@@ -82,7 +124,7 @@ data$Credit_Score <- as.character(data$Credit_Score)
 #   select(x1, x2, ...("y")) %>% 
 #   filter(x1, %in% c("y1", y2") & x2 < N/A) %>% 
 
-
+# ID customerid Name  ssn data that can be removes
 
 
 
