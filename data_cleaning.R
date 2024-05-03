@@ -25,6 +25,9 @@ tail(data)
 str(data)
 summary(data)
 
+# Clean column names
+data <- janitor::clean_names(data)
+View(data)
 
 # Lowercase all column names
 names(data) <- tolower(names(data))
@@ -48,6 +51,32 @@ for (col in names(data)) {
 View(data)
 
 
+# Cleaning Payment Behavior 
+# Get unique values of payment_behaviour column
+unique_payment_behaviour <- unique(data$payment_behaviour)
+print(unique_payment_behaviour) # not fully cleaned
+
+# Cleaning Age
+unique_age <- unique(data$age)
+print(unique_age)
+
+# Convert 'Age' column to numeric (assuming 'Age' is the correct column name)
+data$age <- as.numeric(data$age)
+
+# Remove negative values
+data <- data[data$age >= 0, ]
+
+# Remove ages that are below 21, over 100, and any weird symbols, including negative values
+clean_age <- subset(data, age >= 21 & age <= 100 & !grepl("[_-]|^-", as.character(data$age)) & data$age >= 0)
+
+# Logging the number of rows removed
+rows_removed <- nrow(data) - nrow(clean_age)
+cat("Number of rows removed:", rows_removed, "\n")
+
+# Summary of the cleaned Age column
+summary(clean_age$age)
+View(data)
+
 
 
 
@@ -57,22 +86,6 @@ View(data)
 
 
 -------------------------------------------------------------------------------
-
-
-# Check for missing values in each data set column
-
-missing_data <- colSums(is.na(data))
-
-# Print missing data in an organized format
-
-cat("Column Name                      Missing Values\n")
-cat("----------------------------------------------\n")
-for (col in names(missing_data)) {
-  cat(sprintf("%-30s %d\n", col, missing_data[col]))
-}
-
-
-
 
 
 
@@ -92,7 +105,7 @@ data$ID <- as.character(data$ID)
 data$Customer_ID <- as.character(data$Customer_ID)
 data$Month <- as.factor(data$Month)
 data$Name <- as.character(data$Name)
-data$Age <- as.numeric(data$Age)
+
 data$SSN <- as.character(data$SSN)
 data$Occupation <- as.factor(data$Occupation)
 data$Annual_Income <- as.numeric(data$Annual_Income)
