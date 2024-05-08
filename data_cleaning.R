@@ -40,47 +40,91 @@ View(data)
 
 # Check and loop each column of the data set
 for (col in names(data)) {
-  # Check for white spaces in each column
+  # Check if column contains any white spaces
   if (any(grepl("^\\s*$", data[[col]]))) {
-    # If any white spaces are found, replace them with NA value
-    data[[col]] <- ifelse(grepl("^\\s*$", data[[col]]), NA, data[[col]])
+    # Replace white spaces with NA values
+    data[data[[col]] == "", col] <- NA
   }
 }
 
 # View the data set to check changes
 View(data)
 
-
 # Cleaning Payment Behavior 
 # Get unique values of payment_behaviour column
 unique_payment_behaviour <- unique(data$payment_behaviour)
 print(unique_payment_behaviour) # not fully cleaned
 
-# Cleaning Age
+# Clean Age
+clean_age <- function(data) {
+  # Convert 'Age' column to numeric
+  data$age <- as.numeric(data$age)
+  
+  # Calculate the number of rows before filtering
+  rows_before <- nrow(data)
+  
+  # Remove negative values and ages below 21 and over 100
+  data <- data %>%
+    filter(age >= 21 & age <= 100)
+  
+  # Remove any weird symbols from 'Age' column
+  data$age <- as.character(data$age)  # Convert back to character for pattern matching
+  data <- data %>%
+    filter(!grepl("[_-]|^-", age))
+  
+  # Convert 'Age' column back to numeric
+  data$age <- as.numeric(data$age)
+  
+  # Calculate the number of rows after filtering
+  rows_after <- nrow(data)
+  
+  # Calculate the number of rows removed
+  rows_removed <- rows_before - rows_after
+  cat("Number of rows removed:", rows_removed, "\n")
+  
+  # Summary of the cleaned Age column
+  summary(data$age)
+  
+  return(data)
+}
+
+# Apply the cleaning function to the data
+data <- clean_age(data)
+
+# View data to ensure changes
+View(data)
+
+# Get unique ages after cleaning
 unique_age <- unique(data$age)
 print(unique_age)
 
-# Convert 'Age' column to numeric (assuming 'Age' is the correct column name)
-data$age <- as.numeric(data$age)
 
-# Remove negative values
-data <- data[data$age >= 0, ]
 
-# Remove ages that are below 21, over 100, and any weird symbols, including negative values
-clean_age <- subset(data, age >= 21 & age <= 100 & !grepl("[_-]|^-", as.character(data$age)) & data$age >= 0)
+# No need to check removed rows
 
-# Logging the number of rows removed
-rows_removed <- nrow(data) - nrow(clean_age)
-cat("Number of rows removed:", rows_removed, "\n")
 
-# Summary of the cleaned Age column
-summary(clean_age$age)
+# Clean monthly_inhand_salary
+summary(data$monthly_inhand_salary)
+
+# Clean Annual- Income
+unique_annual_income <- unique(data$annual_income)
+print(unique_annual_income)
+
+# Assuming 'Annual_Income' is the column containing income values
+data$annual_income <- gsub("_$", "", data$annual_income)
+
+# Convert 'Annual_Income' to numeric
+data$annual_income <- as.numeric(data$annual_income)
+
 View(data)
 
+unique_annual_income <- unique(data$annual_income)
+print(unique_annual_income)
 
+summary(data$annual_income)
 
-
-
+# Assuming the lowest annual income is 140000 and highest annual income is 
+# Assuming we divide each annual income by 12 to get what each person earns per month 
 
 
 
@@ -97,7 +141,7 @@ glimpse(data)
 
 # View data structure
 
-str(data)
+
 
 # Convert data set data types
 
